@@ -3,9 +3,8 @@ import json
 from time import time
 from urllib.parse import urlparse
 from uuid import uuid4
-
-import requests
 from flask import Flask, jsonify, request
+from security import safe_requests
 
 
 class Blockchain:
@@ -80,7 +79,7 @@ class Blockchain:
 
         # Grab and verify the chains from all the nodes in our network
         for node in neighbours:
-            response = requests.get(f'http://{node}/chain')
+            response = safe_requests.get(f'http://{node}/chain')
 
             if response.status_code == 200:
                 length = response.json()['length']
