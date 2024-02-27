@@ -258,8 +258,7 @@ def full_chain():
 def register_nodes():
     values = request.get_json()
 
-    nodes = values.get('nodes')
-    if nodes is None:
+    if (nodes := values.get('nodes')) is None:
         return "Error: Please supply a valid list of nodes", 400
 
     for node in nodes:
@@ -274,9 +273,8 @@ def register_nodes():
 
 @app.route('/nodes/resolve', methods=['GET'])
 def consensus():
-    replaced = blockchain.resolve_conflicts()
 
-    if replaced:
+    if replaced := blockchain.resolve_conflicts():
         response = {
             'message': 'Our chain was replaced',
             'new_chain': blockchain.chain
